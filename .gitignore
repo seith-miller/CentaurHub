@@ -1,0 +1,4 @@
+directory_structure.txt
+venv/*
+config.py
+app/__pycache__/*

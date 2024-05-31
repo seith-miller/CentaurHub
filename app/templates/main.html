@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Dashboard - CentaurHub</title>
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    <form id="prompt-form" method="post">
+      <label for="prompt">Enter your prompt:</label>
+      <textarea name="prompt" id="prompt"></textarea>
+      <button type="submit">Send Prompt</button>
+    </form>
+    <h2>Upload File</h2>
+    <form action="{{ url_for('file_management.upload_file') }}" method="post" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <button type="submit">Upload</button>
+    </form>
+    <h2>Responses</h2>
+    <div id="responses">
+      <p>No responses yet.</p>
+    </div>
+    <script>
+      document.getElementById('prompt-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const prompt = document.getElementById('prompt').value;
+        fetch('{{ url_for("llm_api.send_prompt") }}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `prompt=${encodeURIComponent(prompt)}`,
+        })
+        .then(response => response.json())
+        .then(data => {
+          const responseDiv = document.getElementById('responses');
+          responseDiv.innerHTML = `<p>${data.response}</p>`;
+        });
+      });
+    </script>
+  </body>
+</html>
