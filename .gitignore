@@ -1,4 +1,4 @@
 directory_structure.txt
 venv/*
-config.py
+*/config.py
 app/__pycache__/*
